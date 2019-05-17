@@ -1,4 +1,5 @@
 import { override } from '@microsoft/decorators';
+import pnp, { SearchResults } from 'sp-pnp-js';
 import { Log } from '@microsoft/sp-core-library';
 import {
   BaseListViewCommandSet,
@@ -7,9 +8,9 @@ import {
   IListViewCommandSetExecuteEventParameters
 } from '@microsoft/sp-listview-extensibility';
 import { Dialog } from '@microsoft/sp-dialog';
-
+import * as googleMaps from '@google/maps'
 import * as strings from 'CheckAddressCommandSetStrings';
-
+const keySstring: string ='GoogleKey';
 /**
  * If your command set uses the ClientSideComponentProperties JSON input,
  * it will be deserialized into the BaseExtension.properties object.
@@ -44,13 +45,26 @@ export default class CheckAddressCommandSet extends BaseListViewCommandSet<IChec
   public onExecute(event: IListViewCommandSetExecuteEventParameters): void {
     switch (event.itemId) {
       case 'COMMAND_1':
-        Dialog.alert(`${this.properties.sampleTextOne}`);
+        const googleMapsClient = googleMaps.createClient({ // create google Maps Client
+          key: keySstring, // Google API Key, get by Google Cloud 
+          Promise: Promise
+        });
+        debugger;                          
+        // Geocode an address.
+        googleMapsClient.geocode({address: "Lorenzstraße 19, Karlsruhe, 76135" // Address string for the check
+        }, function(err, response) {
+          if (!err) {
+            if(response.json.status = 1) // if Status OK 
+            {
+                const result   = response.json.results[0];
+                var resultString: string = result.formatted_address;   // get Formated Address 
+                Dialog.alert(resultString);                
+            }                                           
+          }
+      });       
         break;
-      case 'COMMAND_2':
-        Dialog.alert(`${this.properties.sampleTextTwo}`);
-        break;
-      default:
-        throw new Error('Unknown command');
+        default:
+          throw new Error('Unknown command'); 
     }
   }
 }
