@@ -1,0 +1,18 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/config.2.0.schema.json",
+  "version": "2.0",
+  "bundles": {
+    "check-address-command-set": {
+      "components": [
+        {
+          "entrypoint": "./lib/extensions/checkAddress/CheckAddressCommandSet.js",
+          "manifest": "./src/extensions/checkAddress/CheckAddressCommandSet.manifest.json"
+        }
+      ]
+    }
+  },
+  "externals": {},
+  "localizedResources": {
+    "CheckAddressCommandSetStrings": "lib/extensions/checkAddress/loc/{locale}.js"
+  }
+}
